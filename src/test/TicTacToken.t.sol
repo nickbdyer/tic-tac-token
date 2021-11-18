@@ -117,4 +117,25 @@ contract TestTTT is TicTacTokenTest {
         ttt.markSpace(1, X);
         ttt.markSpace(2, X);
     }
+
+    function test_board_can_be_reset() public {
+        ttt.markSpace(1, X);
+        ttt.markSpace(2, O);
+        ttt.reset();
+        uint256[9] memory expected = [
+            EMPTY,
+            EMPTY,
+            EMPTY,
+            EMPTY,
+            EMPTY,
+            EMPTY,
+            EMPTY,
+            EMPTY,
+            EMPTY
+        ];
+        uint256[9] memory actual = ttt.getBoard();
+        for (uint256 i=0; i<9; i++) {
+            assertEq(actual[i], expected[i]);
+        }
+    }
 }
