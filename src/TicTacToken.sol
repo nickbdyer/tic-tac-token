@@ -20,24 +20,35 @@ contract TicTacToken {
         playerO = _playerO;
     }
 
+    modifier onlyAdmin() {
+        require(msg.sender == admin, "Must be admin");
+        _;
+    }
+
+    modifier onlyPlayer() {
+        require(_validPlayer(msg.sender), "Unauthorised");
+        _;
+    }
+
     function getBoard() public view returns (uint256[9] memory) {
         return board;
     }
 
-    function reset() public {
-        require(msg.sender == admin, "Must be admin");
+    function reset() public onlyAdmin {
         delete board;
     }
 
-    function markSpace(uint256 space) public {
-        uint256 symbol = _getSymbol(msg.sender);
-        require(_validPlayer(msg.sender), "Unauthorized");
-        require(_validTurn(symbol), "Not your turn");
+    function msgSender() public returns (address) {
+        lastMsgSender = msg.sender;
+        return lastMsgSender;
+    }
+
+    function markSpace(uint256 space) public onlyPlayer {
+        require(_validTurn(msg.sender), "Not your turn");
         require(_validSpace(space), "Invalid space");
-        require(_validSymbol(symbol), "Invalid symbol");
         require(_emptySpace(space), "Already marked");
         turns++;
-        board[space] = symbol;
+        board[space] = _getSymbol(msg.sender);
     }
 
     function _getSymbol(address caller) internal view returns (uint256) {
@@ -50,13 +61,8 @@ contract TicTacToken {
         return caller == playerX || caller == playerO;
     }
 
-    function msgSender() public returns (address) {
-        lastMsgSender = msg.sender;
-        return lastMsgSender;
-    }
-
-    function _validTurn(uint256 symbol) internal view returns (bool) {
-        return currentTurn() == symbol;
+    function _validTurn(address player) internal view returns (bool) {
+        return currentTurn() == _getSymbol(player);
     }
 
     function _validSpace(uint256 i) internal pure returns (bool) {
