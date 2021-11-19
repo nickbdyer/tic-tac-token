@@ -7,22 +7,52 @@ contract TicTacToken {
     uint256 internal turns;
     uint256 internal constant X = 1;
     uint256 internal constant O = 2; 
+    uint256 internal constant EMPTY = 0;
+
+    address public lastMsgSender;
+    address public admin;
+    address public playerX;
+    address public playerO;
+
+    constructor (address _admin, address _playerX, address _playerO) {
+        admin = _admin;
+        playerX = _playerX;
+        playerO = _playerO;
+    }
 
     function getBoard() public view returns (uint256[9] memory) {
         return board;
     }
 
     function reset() public {
+        require(msg.sender == admin, "Must be admin");
         delete board;
     }
 
-    function markSpace(uint256 space, uint256 symbol) public {
+    function markSpace(uint256 space) public {
+        uint256 symbol = _getSymbol(msg.sender);
+        require(_validPlayer(msg.sender), "Unauthorized");
         require(_validTurn(symbol), "Not your turn");
         require(_validSpace(space), "Invalid space");
         require(_validSymbol(symbol), "Invalid symbol");
         require(_emptySpace(space), "Already marked");
         turns++;
         board[space] = symbol;
+    }
+
+    function _getSymbol(address caller) internal view returns (uint256) {
+        if (caller == playerX) return X;
+        if (caller == playerO) return O;
+        return EMPTY;
+    }
+
+    function _validPlayer(address caller) internal view returns (bool) {
+        return caller == playerX || caller == playerO;
+    }
+
+    function msgSender() public returns (address) {
+        lastMsgSender = msg.sender;
+        return lastMsgSender;
     }
 
     function _validTurn(uint256 symbol) internal view returns (bool) {
