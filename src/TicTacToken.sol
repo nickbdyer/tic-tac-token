@@ -46,7 +46,6 @@ contract TicTacToken {
     function markSpace(uint256 space) public onlyPlayer {
         require(_validTurn(msg.sender), "Not your turn");
         require(_validSpace(space), "Invalid space");
-        require(_emptySpace(space), "Already marked");
         turns++;
         board[space] = _getSymbol(msg.sender);
     }
@@ -65,16 +64,8 @@ contract TicTacToken {
         return currentTurn() == _getSymbol(player);
     }
 
-    function _validSpace(uint256 i) internal pure returns (bool) {
-        return i < 9;
-    }
-
-    function _emptySpace(uint256 i) internal view returns (bool) {
-        return board[i] == 0;
-    }
-
-    function _validSymbol(uint256 symbol) internal pure returns (bool) {
-        return symbol == X || symbol == O;
+    function _validSpace(uint256 i) internal view returns (bool) {
+        return i < 9 && board[i] == 0;
     }
 
     function currentTurn() public view returns (uint256) {
