@@ -6,5 +6,5 @@ set -eo pipefail
 . $(dirname $0)/common.sh
 
 # Deploy.
-TTTAddr=$(deploy TicTacToken)
+TTTAddr=$(deploy TicTacToken "$ADMIN" "$PLAYERX" "$PLAYERO")
 log "TicTacToken deployed at:" $TTTAddr
