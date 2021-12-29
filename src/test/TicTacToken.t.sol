@@ -57,6 +57,15 @@ contract TestTTT is TicTacTokenTest {
         assertEq(ttt.winner(), X);
     }
 
+    function test_checks_for_horizontal_win_on_another_line() public {
+        playerX.markSpace(3);
+        playerO.markSpace(6);
+        playerX.markSpace(4);
+        playerO.markSpace(7);
+        playerX.markSpace(5);
+        assertEq(ttt.winner(), X);
+    }
+
     function test_checks_for_vertical_win() public {
         playerX.markSpace(1);
         playerO.markSpace(0);

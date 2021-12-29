@@ -3,10 +3,10 @@ pragma solidity ^0.8.0;
 
 contract TicTacToken {
     uint256[9] public board;
-    
+
     uint256 internal turns;
     uint256 internal constant X = 1;
-    uint256 internal constant O = 2; 
+    uint256 internal constant O = 2;
     uint256 internal constant EMPTY = 0;
 
     address public lastMsgSender;
@@ -98,8 +98,9 @@ contract TicTacToken {
     }
 
     function _row(uint256 row) internal view returns (uint256) {
-        require(row <= 2, "Invalid row");
-        return board[row] * board[row + 1] * board[row + 2];
+        require(row <= 6, "Invalid row");
+        uint256 pos = row * 3;
+        return board[pos] * board[pos + 1] * board[pos + 2];
     }
 
     function _col(uint256 col) internal view returns (uint256) {
