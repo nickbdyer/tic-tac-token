@@ -161,4 +161,14 @@ contract TestTTT is TicTacTokenTest {
         playGameXWins();
         assertEq(ttt.totalWins(address(playerX)), 1);
     }
+
+    function test_total_games_starts_at_0() public {
+        assertEq(ttt.totalGames(), 0);
+    }
+
+    function test_total_games_increments_after_a_game() public {
+        playGameXWins();
+        assertEq(ttt.totalGames(), 1);
+    }
+
 }

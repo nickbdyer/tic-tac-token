@@ -15,6 +15,7 @@ contract TicTacToken {
     address public playerO;
 
     mapping(address => uint256) public totalWins;
+    uint256 public totalGames;
 
     constructor (address _admin, address _playerX, address _playerO) {
         admin = _admin;
@@ -51,16 +52,16 @@ contract TicTacToken {
         turns++;
         board[space] = _getSymbol(msg.sender);
         if (winner() != 0) {
+            totalGames++;
             address winnerAddress = _getAddress(winner());
             totalWins[winnerAddress]++;
         }
     }
 
     function _getAddress(uint256 symbol) internal view returns (address) {
-      if (symbol == X) return playerX;
-      if (symbol == O) return playerO;
-      return address(0);
-
+        if (symbol == X) return playerX;
+        if (symbol == O) return playerO;
+        return address(0);
     }
 
     function _getSymbol(address caller) internal view returns (uint256) {
