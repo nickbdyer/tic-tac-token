@@ -37,13 +37,21 @@ abstract contract TicTacTokenTest is DSTest {
         playerO = new User();
         other = new User();
         ttt = new TicTacToken(
-            address(admin), 
-            address(playerX), 
+            address(admin),
+            address(playerX),
             address(playerO)
         );
         admin.setTTT(address(ttt));
         playerX.setTTT(address(ttt));
         playerO.setTTT(address(ttt));
         other.setTTT(address(ttt));
+    }
+
+    function playGameXWins() public {
+      playerX.markSpace(0);
+      playerO.markSpace(3);
+      playerX.markSpace(1);
+      playerO.markSpace(4);
+      playerX.markSpace(2);
     }
 }
