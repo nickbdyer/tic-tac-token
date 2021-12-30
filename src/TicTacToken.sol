@@ -16,6 +16,7 @@ contract TicTacToken {
 
     mapping(address => uint256) public totalWins;
     uint256 public totalGames;
+    mapping(address => uint256) public totalPoints;
 
     constructor (address _admin, address _playerX, address _playerO) {
         admin = _admin;
@@ -38,6 +39,7 @@ contract TicTacToken {
     }
 
     function reset() public onlyAdmin {
+        turns = 0;
         delete board;
     }
 
@@ -55,7 +57,14 @@ contract TicTacToken {
             totalGames++;
             address winnerAddress = _getAddress(winner());
             totalWins[winnerAddress]++;
+            totalPoints[winnerAddress] += _calculatePoints();
         }
+    }
+
+    function _calculatePoints() internal view returns (uint256) {
+        if (turns <= 6) return 300;
+        if (turns <= 8) return 200;
+        return 100;
     }
 
     function _getAddress(uint256 symbol) internal view returns (address) {
