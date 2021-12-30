@@ -18,7 +18,11 @@ contract TicTacToken {
     uint256 public totalGames;
     mapping(address => uint256) public totalPoints;
 
-    constructor (address _admin, address _playerX, address _playerO) {
+    constructor(
+        address _admin,
+        address _playerX,
+        address _playerO
+    ) {
         admin = _admin;
         playerX = _playerX;
         playerO = _playerO;

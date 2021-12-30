@@ -48,10 +48,10 @@ abstract contract TicTacTokenTest is DSTest {
     }
 
     function playGameXWins() public {
-      playerX.markSpace(0);
-      playerO.markSpace(3);
-      playerX.markSpace(1);
-      playerO.markSpace(4);
-      playerX.markSpace(2);
+        playerX.markSpace(0);
+        playerO.markSpace(3);
+        playerX.markSpace(1);
+        playerO.markSpace(4);
+        playerX.markSpace(2);
     }
 }
